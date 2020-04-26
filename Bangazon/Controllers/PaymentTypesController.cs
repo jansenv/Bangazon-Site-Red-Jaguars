@@ -58,12 +58,13 @@ namespace Bangazon.Controllers
                 var paymentTypeInstance = new PaymentType
                 {
                     Description = paymentType.Description,
-                    AccountNumber = paymentType.AccountNumber
+                    AccountNumber = paymentType.AccountNumber,
                 };
 
                 paymentTypeInstance.UserId = user.Id;
 
-                _context.PaymentType.Add(paymentType);
+
+                _context.PaymentType.Add(paymentTypeInstance);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
