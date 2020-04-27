@@ -4,7 +4,21 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>All Products</h1>
+<h1>Products</h1>
+
+<form asp-controller="Products" asp-action="Index">
+    <p>
+        Title: <input type="text" name="SearchString">
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<form asp-controller="Products" asp-action="Index">
+    <p>
+        City: <input type="text" name="citySearchString">
+        <input type="submit" value="Search" />
+    </p>
+</form>
 
 <table class="table">
     <thead>
