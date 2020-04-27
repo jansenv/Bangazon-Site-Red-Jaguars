@@ -25,17 +25,30 @@ namespace Bangazon.Controllers
         }
 
         // GET: Products
-        public ActionResult Index()
+        public async Task<ActionResult> Index(string searchString, string citySearchString)
         {
-            return View();
+            var products = from p in _context.Product
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.Title.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(citySearchString))
+            {
+                products = products.Where(s => s.City.Contains(citySearchString));
+            }
+
+            return View(await products.ToListAsync());
         }
 
         // GET: Products/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var product = _context.Product
+            var product = await _context.Product
                 .Include(p => p.ProductType)
-                .FirstOrDefault(p => p.ProductId == id);
+                .FirstOrDefaultAsync(p => p.ProductId == id);
 
             return View(product);
         }
