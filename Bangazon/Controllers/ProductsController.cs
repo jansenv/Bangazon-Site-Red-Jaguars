@@ -25,12 +25,17 @@ namespace Bangazon.Controllers
         }
 
         // GET: Products
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searchString)
         {
-            var products = await _context.Product
-                .Include(p => p.ProductType)
-                .ToListAsync();
-            return View(products);
+            var products = from p in _context.Product
+                           select p;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.Title.Contains(searchString));
+            }
+
+            return View(await products.ToListAsync());
         }
 
         // GET: Products/Details/5
