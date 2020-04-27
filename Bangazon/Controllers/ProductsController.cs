@@ -31,9 +31,13 @@ namespace Bangazon.Controllers
         }
 
         // GET: Products/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var product = _context.Product
+                .Include(p => p.ProductType)
+                .FirstOrDefault(p => p.ProductId == id);
+
+            return View(product);
         }
 
         // GET: Products/Create
@@ -79,7 +83,8 @@ namespace Bangazon.Controllers
                 _context.Product.Add(product);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Details));
+                return RedirectToAction("Details", new { id = product.ProductId });
+
             }
             catch
             {
