@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Bangazon.Models.PaymentType>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Your Payment Methods</h1>
+
+<p>
+    <a asp-action="Create">Add a Payment Method</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Account Number
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccountNumber)
+            </td>
+            @*@<td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>*@
+        </tr>
+}
+    </tbody>
+</table>
+<p>
+    <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Back to Profile</a>
+</p>
