@@ -26,9 +26,13 @@ namespace Bangazon.Models
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:C}")]
+        [Range(0.01, 10000.00,
+            ErrorMessage = "Price must be between $0.01 and $10,000")]
         public double Price { get; set; }
 
         [Required]
+        [Range(1, Double.PositiveInfinity,
+            ErrorMessage = "Quantity Must be at least 1")]
         public int Quantity { get; set; }
 
         [Required]
@@ -43,10 +47,11 @@ namespace Bangazon.Models
         [Required]
         public ApplicationUser User { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Product type is required")]
         [Display(Name="Product Category")]
         public int ProductTypeId { get; set; }
 
+        
         public ProductType ProductType { get; set; }
 
         public virtual ICollection<OrderProduct> OrderProducts { get; set; }
