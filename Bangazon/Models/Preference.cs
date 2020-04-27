@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Bangazon.Models
 {
@@ -11,12 +7,14 @@ namespace Bangazon.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
-        [Required]
-        public int PostId { get; set; }
+        public ApplicationUser User { get; set; }
 
-        public bool? LikeOrDislike { get; set; }
+        public int ProductId { get; set; }
+
+        public Product Product { get; set; }
+
+        public bool? Like { get; set; }
     }
 }
