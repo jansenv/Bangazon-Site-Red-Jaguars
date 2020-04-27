@@ -25,7 +25,7 @@ namespace Bangazon.Controllers
         }
 
         // GET: Products
-        public async Task<ActionResult> Index(string searchString)
+        public async Task<ActionResult> Index(string searchString, string citySearchString)
         {
             var products = from p in _context.Product
                            select p;
@@ -33,6 +33,11 @@ namespace Bangazon.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 products = products.Where(s => s.Title.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(citySearchString))
+            {
+                products = products.Where(s => s.City.Contains(citySearchString));
             }
 
             return View(await products.ToListAsync());
