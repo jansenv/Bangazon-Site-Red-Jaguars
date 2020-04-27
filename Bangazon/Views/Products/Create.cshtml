@@ -4,19 +4,13 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Sell Something</h1>
 
-<h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @*<div class="form-group">
-                <label asp-for="Product.DateCreated" class="control-label">Date Created</label>
-                <input asp-for="Product.DateCreated" class="form-control" />
-                <span asp-validation-for="Product.DateCreated" class="text-danger"></span>
-            </div>*@
             <div class="form-group">
                 <label asp-for="Product.Title" class="control-label">Name</label>
                 <input asp-for="Product.Title" class="form-control" />
@@ -47,19 +41,15 @@
                 <input asp-for="Product.ImagePath" class="form-control" />
                 <span asp-validation-for="Product.ImagePath" class="text-danger"></span>
             </div>
-            @*<div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Product.Active" /> @Html.DisplayNameFor(model => model.Product.Active)
-                </label>
-            </div>*@
         <div class="form-group">
             <label asp-for="Product.ProductTypeId" class="control-label">Product Type</label>
             <select asp-for="Product.ProductTypeId" class="form-control" asp-items="@Model.ProductTypes">
                 <option value="" hidden>Please make a selection</option>
             </select>
+            <span asp-validation-for="Product.ProductTypeId" class="text-danger"></span>
         </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Sell" class="btn btn-primary" />
             </div>
         </form>
     </div>
