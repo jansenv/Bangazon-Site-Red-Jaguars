@@ -99,19 +99,30 @@ namespace Bangazon.Controllers
         }
 
         // GET: PaymentTypes/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var paymentType = await _context.PaymentType.FirstOrDefaultAsync(pt => pt.PaymentTypeId == id);
+
+            var loggedInUser = await GetCurrentUserAsync();
+
+            if (paymentType.UserId != loggedInUser.Id)
+            {
+                return NotFound();
+            }
+
+            return View(paymentType);
         }
 
         // POST: PaymentTypes/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, PaymentType paymentType)
         {
             try
             {
-                // TODO: Add delete logic here
+
+                _context.PaymentType.Remove(paymentType);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
