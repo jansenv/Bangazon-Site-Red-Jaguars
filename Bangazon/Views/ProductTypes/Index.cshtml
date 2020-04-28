@@ -1,0 +1,48 @@
+﻿@model Bangazon.Models.ViewModels.ProductTypeViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>
+                Product Type
+            </th>
+           
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @foreach (var item in Model.Types)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(Item => item.TypeName) (@Html.DisplayFor(Item => item.ProductCount))
+                
+                
+                    <ol>
+                    @foreach (var prod in item.Products)
+                    {
+                        <li>  @Html.ActionLink(prod.Title, "Details", "Products", new { id = prod.ProductId }, new { area=""})</li>
+                    }
+                    </ol>
+                </td>
+
+                @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
