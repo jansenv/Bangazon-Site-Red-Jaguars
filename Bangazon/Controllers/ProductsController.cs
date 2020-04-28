@@ -50,7 +50,30 @@ namespace Bangazon.Controllers
                 .Include(p => p.ProductType)
                 .FirstOrDefaultAsync(p => p.ProductId == id);
 
-            return View(product);
+            var user = await GetCurrentUserAsync();
+
+            var userPreferences = await _context.Preference
+                .Where(p => p.ProductId == id)
+                .Where(p => p.UserId == user.Id)
+                .ToListAsync();
+
+            var viewModel = new ProductDetailViewModel()
+            {
+                DateCreated = product.DateCreated,
+                Title = product.Title,
+                Description = product.Description,
+                Price = product.Price,
+                Quantity = product.Quantity,
+                ProductType = product.ProductType,
+            };
+
+            if (userPreferences.Count == 0)
+            {
+                viewModel.HasLikeButton = true;
+                viewModel.HasDislikeButton = true;
+            }
+
+            return View(viewModel);
         }
 
         // GET: Products/Create
@@ -150,7 +173,6 @@ namespace Bangazon.Controllers
                 return View();
             }
         }
-
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
     }
 }
