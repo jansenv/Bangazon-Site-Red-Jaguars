@@ -69,14 +69,16 @@ namespace Bangazon.Data {
                     PaymentTypeId = 1,
                     UserId = user.Id,
                     Description = "American Express",
-                    AccountNumber = "86753095551212"
+                    AccountNumber = "86753095551212",
+                    ExpirationDate = new DateTime (2024, 08, 30)
                 },
                 new PaymentType()
                 {
                     PaymentTypeId = 2,
                     UserId = user.Id,
                     Description = "Discover",
-                    AccountNumber = "4102948572991"
+                    AccountNumber = "4102948572991",
+                    ExpirationDate = new DateTime(2020, 02, 29)
                 }
             );
 
