@@ -19,7 +19,6 @@ namespace Bangazon.Models
 
     [Required(ErrorMessage = "Expiration date is required")]
     [DataType(DataType.Date)]
-    [CheckDateRange]
     public DateTime ExpirationDate { get; set; }
 
     [Required]
@@ -37,20 +36,6 @@ namespace Bangazon.Models
     public ApplicationUser User { get; set; }
 
     public ICollection<Order> Orders { get; set; }
-
-    }
-    public class CheckDateRangeAttribute : ValidationAttribute
-    {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            DateTime dt = (DateTime)value;
-            if (dt >= DateTime.UtcNow)
-            {
-                return ValidationResult.Success;
-            }
-
-            return new ValidationResult(ErrorMessage ?? "Expiration date cannot be in the past");
-        }
 
     }
 }
