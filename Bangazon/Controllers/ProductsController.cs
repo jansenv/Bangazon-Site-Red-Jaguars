@@ -25,11 +25,14 @@ namespace Bangazon.Controllers
         }
 
         // GET: Products
-        public async Task<ActionResult> Index(string searchString, string citySearchString)
+        public async Task<ActionResult> Index(string searchString, string citySearchString, int? id)
         {
             var products = from p in _context.Product
                            select p;
-
+            if (id != null)
+            {
+                products = products.Where(i => i.ProductTypeId == id);
+            }
             if (!String.IsNullOrEmpty(searchString))
             {
                 products = products.Where(s => s.Title.Contains(searchString));
@@ -42,6 +45,14 @@ namespace Bangazon.Controllers
 
             return View(await products.ToListAsync());
         }
+        //public async Task<ActionResult> TypeIndex (int id)
+        //{
+        //    var products = from p in _context.Product
+        //                   .Where(p=> p.ProductTypeId == id)
+        //                   select p;
+        //    return View(await products.ToListAsync());
+
+        //}
 
         // GET: Products/Details/5
         public async Task<ActionResult> Details(int id)

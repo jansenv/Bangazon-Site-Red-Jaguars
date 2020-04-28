@@ -26,9 +26,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(Item => item.TypeName) (@Html.DisplayFor(Item => item.ProductCount))
-                
-                
+                    @Html.ActionLink(item.TypeName, "Index", "Products", new { id = item.TypeId }, new { area = "" })
+                        (@Html.DisplayFor(Item => item.ProductCount))
+
+
                     <ol>
                     @foreach (var prod in item.Products)
                     {
