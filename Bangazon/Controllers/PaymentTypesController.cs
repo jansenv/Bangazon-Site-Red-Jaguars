@@ -51,6 +51,11 @@ namespace Bangazon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(PaymentType paymentType)
         {
+            if(!ModelState.IsValid)
+            {
+                return View(paymentType);
+            }
+
             try
             {
                 var user = await GetCurrentUserAsync();
@@ -60,6 +65,10 @@ namespace Bangazon.Controllers
                     Description = paymentType.Description,
                     AccountNumber = paymentType.AccountNumber,
                 };
+                    if (paymentType.ExpirationDate < DateTime.Now)
+                    {
+                        paymentTypeInstance.ExpirationDate = paymentType.ExpirationDate;
+                    }
 
                 paymentTypeInstance.UserId = user.Id;
 

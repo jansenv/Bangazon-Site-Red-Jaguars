@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Bangazon.Migrations
 {
-    public partial class BangazonTables : Migration
+    public partial class DatabaseTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -175,6 +175,7 @@ namespace Bangazon.Migrations
                     PaymentTypeId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "GETDATE()"),
+                    ExpirationDate = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(maxLength: 55, nullable: false),
                     AccountNumber = table.Column<string>(maxLength: 20, nullable: false),
                     UserId = table.Column<string>(nullable: false)
@@ -281,7 +282,7 @@ namespace Bangazon.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StreetAddress", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "de03f20c-b4ed-476c-8ba8-7e742cb01483", "admin@admin.com", true, "Admina", "Straytor", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEAgyidTi6zvoAC79Eo35NRprpQLyvnXVv010bMwm+ICCthHmWyb0UicMzjsX3VTCXg==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", "123 Infinity Way", false, "admin@admin.com" });
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "48416c18-9253-49c1-beb7-5fbac5aaebe7", "admin@admin.com", true, "Admina", "Straytor", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEGzWFcph/DK0XgM1vwZ/S95zIyosJwW6PQZt+4z7+wly0e0q3hua2GTzlNlta7PxIg==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", "123 Infinity Way", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "ProductType",
@@ -307,11 +308,11 @@ namespace Bangazon.Migrations
 
             migrationBuilder.InsertData(
                 table: "PaymentType",
-                columns: new[] { "PaymentTypeId", "AccountNumber", "Description", "UserId" },
+                columns: new[] { "PaymentTypeId", "AccountNumber", "Description", "ExpirationDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "86753095551212", "American Express", "00000000-ffff-ffff-ffff-ffffffffffff" },
-                    { 2, "4102948572991", "Discover", "00000000-ffff-ffff-ffff-ffffffffffff" }
+                    { 1, "86753095551212", "American Express", new DateTime(2024, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "00000000-ffff-ffff-ffff-ffffffffffff" },
+                    { 2, "4102948572991", "Discover", new DateTime(2020, 2, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), "00000000-ffff-ffff-ffff-ffffffffffff" }
                 });
 
             migrationBuilder.InsertData(
