@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model Bangazon.Models.ProductViewModels.ProductDetailViewModel
+@model Bangazon.Models.Product
 @inject UserManager<ApplicationUser> UserManager
 
 @{
@@ -7,22 +7,21 @@
 }
 
 
-@if (Model.HasLikeButton == true && Model.HasDislikeButton == true)
-    {
+@*if (Model.HasLikeButton == true && Model.HasDislikeButton == true)
+    {*@
     <div class="row float-right">
 
-        <form asp-controller="Preferences" asp-action="Like">
+        <form asp-controller="Preferences" asp-action="Create">
             <input type="hidden" asp-for="ProductId" />
             <input type="submit" value="Like" class="btn btn-success" />
         </form>
 
-        <form asp-controller="Preferences" asp-action="Dislike">
+        <form asp-controller="Preferences" asp-action="Create">
             <input type="hidden" asp-for="ProductId" />
             <input type="submit" value="Dislike" class="btn btn-danger" />
         </form>
 
     </div>
-    }
       
 
 <div>
