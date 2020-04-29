@@ -1,31 +1,17 @@
 ﻿@model IEnumerable<Bangazon.Models.Product>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "IndexOfUserProducts";
 }
 
-<h1>Products</h1>
+<h1>My Products</h1>
 
-<a asp-action="Create">Sell a Product</a>
-
-<details>
-    <summary>Search</summary>
-<form asp-controller="Products" asp-action="Index">
-    <p>
-        Title: <input type="text" name="SearchString" class="form-control form-inline w-25">
-        City: <input type="text" name="citySearchString" class="form-control form-inline w-25">
-    </p>
-    <input type="submit" value="Search" />
-    <input type="button" value="Reset" onclick="location.href='/Products'"/>
-</form>
-</details>
-
+<p>
+    <a asp-action="Create">Sell a Product</a>
+</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
@@ -39,9 +25,6 @@
                 @Html.DisplayNameFor(model => model.Quantity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
                 Product Type
             </th>
             <th></th>
@@ -50,18 +33,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            @if (!String.IsNullOrEmpty(item.ImagePath))
-            {
-                <td>
-                    <img style="width: 75px" src="~/images/@item.ImagePath" alt="descriptive image" />
-                </td>
-            } else
-            {
-                <td>
-                    <img style="width: 75px" src="~/images/Bangazon-purple.png" alt="descriptive image" />
-                </td>
-
-            }
             <td>
                 @Html.ActionLink(item.Title, "Details", "Products", new { id = item.ProductId }, new { area = "" })
             </td>
@@ -75,15 +46,12 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
                 @Html.ActionLink(item.ProductType.Label, "Index", "Products", new { id = item.ProductTypeId }, new { area = "" })
             </td>
             <td>
                 @*Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                @*Html.ActionLink("Details", "Details", new { id = item.ProductId }) |*@
-                @*Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                @*Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                <button class="btn btn-danger">@Html.ActionLink("Delete", "Delete", new { id=item.ProductId })</button>
             </td>
         </tr>
 }

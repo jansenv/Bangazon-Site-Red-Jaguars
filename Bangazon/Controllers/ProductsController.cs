@@ -58,6 +58,18 @@ namespace Bangazon.Controllers
 
         //}
 
+        public async Task<ActionResult> IndexOfUserProducts()
+        {
+            var user = await GetCurrentUserAsync();
+
+            var products = await _context.Product
+                .Include(p => p.ProductType)
+                .Where(p => p.UserId == user.Id)
+                .ToListAsync();
+
+            return View(products);
+        }
+
         // GET: Products/Details/5
         public async Task<ActionResult> Details(int id)
         {
@@ -234,21 +246,31 @@ namespace Bangazon.Controllers
         }
 
         // GET: Products/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var product = await _context.Product.Include(p => p.ProductType).FirstOrDefaultAsync(p => p.ProductId == id);
+
+            var loggedInUser = await GetCurrentUserAsync();
+
+            if (product.UserId != loggedInUser.Id)
+            {
+                return NotFound();
+            }
+
+            return View(product);
         }
 
         // POST: Products/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, Product product)
         {
             try
             {
-                // TODO: Add delete logic here
+                _context.Product.Remove(product);
+                await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexOfUserProducts));
             }
             catch
             {
