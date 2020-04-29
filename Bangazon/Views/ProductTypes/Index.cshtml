@@ -4,18 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Product Types</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
 
     <thead>
         <tr>
-            <th>
-                Product Type
-            </th>
            
         </tr>
     </thead>
@@ -26,9 +20,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(Item => item.TypeName) (@Html.DisplayFor(Item => item.ProductCount))
-                
-                
+                    @Html.ActionLink(item.TypeName, "Index", "Products", new { id = item.TypeId }, new { area = "" })
+                        (@Html.DisplayFor(Item => item.ProductCount))
+
+
                     <ol>
                     @foreach (var prod in item.Products)
                     {
