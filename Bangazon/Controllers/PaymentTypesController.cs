@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Bangazon.Models.ViewModels;
 
 namespace Bangazon.Controllers
 {
@@ -49,23 +50,36 @@ namespace Bangazon.Controllers
         // POST: PaymentTypes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(PaymentType paymentType)
+        public async Task<ActionResult> Create(PaymentTypeViewModel paymentTypeViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(new PaymentType 
+                {
+                    DateCreated = DateTime.Now,
+                    Description = paymentTypeViewModel.Description,
+                    AccountNumber = paymentTypeViewModel.AccountNumber,
+                    ExpirationDate = paymentTypeViewModel.ExpirationDate
+                });
+            }
+
             try
             {
                 var user = await GetCurrentUserAsync();
 
                 var paymentTypeInstance = new PaymentType
                 {
-                    Description = paymentType.Description,
-                    AccountNumber = paymentType.AccountNumber,
+                    DateCreated = DateTime.Now,
+                    Description = paymentTypeViewModel.Description,
+                    AccountNumber = paymentTypeViewModel.AccountNumber,
+                    ExpirationDate = paymentTypeViewModel.ExpirationDate
                 };
 
                 paymentTypeInstance.UserId = user.Id;
 
-
                 _context.PaymentType.Add(paymentTypeInstance);
                 await _context.SaveChangesAsync();
+
 
                 return RedirectToAction(nameof(Index));
             }

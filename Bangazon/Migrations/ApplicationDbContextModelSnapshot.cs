@@ -100,7 +100,7 @@ namespace Bangazon.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "12ae627e-4520-4680-ac1e-c15807a539a6",
+                            ConcurrencyStamp = "48416c18-9253-49c1-beb7-5fbac5aaebe7",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admina",
@@ -108,7 +108,7 @@ namespace Bangazon.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMDX756lzK5yK+6m7RdD6O3Ae5+x8pq18PZGg42u/Fc0Ii+g9gjh0SI1+TWs4EK08A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGzWFcph/DK0XgM1vwZ/S95zIyosJwW6PQZt+4z7+wly0e0q3hua2GTzlNlta7PxIg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             StreetAddress = "123 Infinity Way",
@@ -214,6 +214,9 @@ namespace Bangazon.Migrations
                         .HasColumnType("nvarchar(55)")
                         .HasMaxLength(55);
 
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -231,6 +234,7 @@ namespace Bangazon.Migrations
                             AccountNumber = "86753095551212",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "American Express",
+                            ExpirationDate = new DateTime(2024, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = "00000000-ffff-ffff-ffff-ffffffffffff"
                         },
                         new
@@ -239,33 +243,9 @@ namespace Bangazon.Migrations
                             AccountNumber = "4102948572991",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Discover",
+                            ExpirationDate = new DateTime(2020, 2, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = "00000000-ffff-ffff-ffff-ffffffffffff"
                         });
-                });
-
-            modelBuilder.Entity("Bangazon.Models.Preference", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool?>("Like")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Preference");
                 });
 
             modelBuilder.Entity("Bangazon.Models.Product", b =>
@@ -622,19 +602,6 @@ namespace Bangazon.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Bangazon.Models.Preference", b =>
-                {
-                    b.HasOne("Bangazon.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Bangazon.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Bangazon.Models.Product", b =>

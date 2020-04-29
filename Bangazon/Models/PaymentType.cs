@@ -16,6 +16,11 @@ namespace Bangazon.Models
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateCreated { get; set; }
 
+
+    [Required(ErrorMessage = "Expiration date is required")]
+    [DataType(DataType.Date)]
+    public DateTime ExpirationDate { get; set; }
+
     [Required]
     [StringLength(55)]
     public string Description { get; set; }
@@ -31,5 +36,6 @@ namespace Bangazon.Models
     public ApplicationUser User { get; set; }
 
     public ICollection<Order> Orders { get; set; }
-  }
+
+    }
 }
