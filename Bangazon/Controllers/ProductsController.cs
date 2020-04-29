@@ -30,6 +30,7 @@ namespace Bangazon.Controllers
         public async Task<ActionResult> Index(string searchString, string citySearchString, int? id)
         {
             var products = from p in _context.Product
+                           .Include(p => p.ProductType)
                            select p;
             if (id != null)
             {

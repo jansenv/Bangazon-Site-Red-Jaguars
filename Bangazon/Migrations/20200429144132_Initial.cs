@@ -254,6 +254,33 @@ namespace Bangazon.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Preference",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(nullable: true),
+                    ProductId = table.Column<int>(nullable: false),
+                    Like = table.Column<bool>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Preference", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Preference_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Preference_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderProduct",
                 columns: table => new
                 {
@@ -282,7 +309,7 @@ namespace Bangazon.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "StreetAddress", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "5452f972-5e19-48a5-9b84-9fcc03236db9", "admin@admin.com", true, "Admina", "Straytor", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEOdwOp7r9URYc6VHb2tmuvHWz1aHjANbN4b7EiG7Vb/8L+U7vqKnuAVgcNW5wo6Pvg==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", "123 Infinity Way", false, "admin@admin.com" });
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "5ef5075c-a6bd-42d7-a09d-3172a2a768ed", "admin@admin.com", true, "Admina", "Straytor", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAECoXo0a71Mu7dp5/orRhVKO/+fhEB7rbS22sJYlX/95CRy/w/r1OfApBKMr4s7LKPw==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", "123 Infinity Way", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "ProductType",
@@ -402,6 +429,16 @@ namespace Bangazon.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Preference_ProductId",
+                table: "Preference",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Preference_UserId",
+                table: "Preference",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Product_ProductTypeId",
                 table: "Product",
                 column: "ProductTypeId");
@@ -431,6 +468,9 @@ namespace Bangazon.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderProduct");
+
+            migrationBuilder.DropTable(
+                name: "Preference");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
