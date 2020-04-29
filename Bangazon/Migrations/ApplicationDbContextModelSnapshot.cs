@@ -100,7 +100,7 @@ namespace Bangazon.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5452f972-5e19-48a5-9b84-9fcc03236db9",
+                            ConcurrencyStamp = "5ef5075c-a6bd-42d7-a09d-3172a2a768ed",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admina",
@@ -108,7 +108,7 @@ namespace Bangazon.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOdwOp7r9URYc6VHb2tmuvHWz1aHjANbN4b7EiG7Vb/8L+U7vqKnuAVgcNW5wo6Pvg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECoXo0a71Mu7dp5/orRhVKO/+fhEB7rbS22sJYlX/95CRy/w/r1OfApBKMr4s7LKPw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             StreetAddress = "123 Infinity Way",
@@ -246,6 +246,31 @@ namespace Bangazon.Migrations
                             ExpirationDate = new DateTime(2020, 2, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = "00000000-ffff-ffff-ffff-ffffffffffff"
                         });
+                });
+
+            modelBuilder.Entity("Bangazon.Models.Preference", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool?>("Like")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Preference");
                 });
 
             modelBuilder.Entity("Bangazon.Models.Product", b =>
@@ -602,6 +627,19 @@ namespace Bangazon.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Bangazon.Models.Preference", b =>
+                {
+                    b.HasOne("Bangazon.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bangazon.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Bangazon.Models.Product", b =>

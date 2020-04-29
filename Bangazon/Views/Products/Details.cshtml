@@ -1,66 +1,95 @@
-﻿@model Bangazon.Models.Product
+﻿@using Microsoft.AspNetCore.Identity
+@model Bangazon.Models.ProductViewModels.ProductDetailViewModel
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Details";
 }
 
+@* Render the Like Buttons if the logged in User does not have a preference listed in the table. OR, we can still render them if nobody is logged in, but they redirect to the login page on click.*@
+@if (Model.HasLikeButton == true && Model.HasDislikeButton == true)
+{
+    <div class="row float-right">
+
+        <form asp-controller="Preferences" asp-action="Like">
+            <input type="hidden" asp-for="ProductId" />
+            <input type="submit" value="Like" class="btn btn-success" />
+        </form>
+
+        <form asp-controller="Preferences" asp-action="Dislike">
+            <input type="hidden" asp-for="ProductId" />
+            <input type="submit" value="Dislike" class="btn btn-danger" />
+        </form>
+
+    </div>
+} 
+
+@if (Model.HasLikeButton == false && Model.HasDislikeButton == true)
+{
+    <div class="row float-right">✔ You liked this product!</div>
+} 
+
+@if (Model.HasLikeButton == true && Model.HasDislikeButton == false)
+{
+    <div class="row float-right">❌ You disliked this product.</div>
+}
 
 <div>
     <h4>Product</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateCreated)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateCreated)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Quantity)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Quantity)
         </dd>
         @if (!String.IsNullOrEmpty(Model.City))
         {
-            <dt class = "col-sm-2">
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.City)
             </dt>
-            <dd class = "col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.City)
             </dd>
         }
         @if (!String.IsNullOrEmpty(Model.ImagePath))
         {
-            <dt class = "col-sm-2">
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.ImagePath)
             </dt>
-            <dd class = "col-sm-10">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.ImagePath)
             </dd>
         }
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             Product Type
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ProductType.Label)
         </dd>
     </dl>
