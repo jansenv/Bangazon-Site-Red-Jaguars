@@ -87,14 +87,14 @@ namespace Bangazon.Controllers
                 {
                     viewModel.HasLikeButton = true;
                     viewModel.HasDislikeButton = true;
-                }
+                } else
                 
                 // Now check that object we made that has the same info and drill down to see if the user has a preference. These will only trigger if that preference exists and they will render an option based on if the user Liked or Dislike before.
                 if (userLikeOrDislike.Like == true)
                 {
                     viewModel.HasLikeButton = false;
                     viewModel.HasDislikeButton = true;
-                } 
+                } else
                 if (userLikeOrDislike.Like == false)
                 {
                     viewModel.HasLikeButton = true;
