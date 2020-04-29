@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace Bangazon.Models.ProductViewModels
 {
@@ -21,6 +22,7 @@ namespace Bangazon.Models.ProductViewModels
         public int Quantity { get; set; }
         public string City { get; set; }
         public string ImagePath { get; set; }
+        public IFormFile ImageFile { get; set; }
         public ProductType ProductType { get; set; }
         public bool HasLikeButton { get; set; }
         public bool HasDislikeButton { get; set; }
