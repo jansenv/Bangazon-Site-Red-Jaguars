@@ -188,7 +188,7 @@ namespace Bangazon.Controllers
                 };
 
                 var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
-                if (productDetailViewModel.ImageFile.Length > 0)
+                if (productDetailViewModel.ImageFile != null)
                 {
                     var fileName = Guid.NewGuid().ToString() + productDetailViewModel.ImageFile.FileName;
                     product.ImagePath = fileName;
