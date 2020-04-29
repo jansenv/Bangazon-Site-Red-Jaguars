@@ -19,7 +19,7 @@
     <thead>
         <tr>
             <th>
-                Image
+                
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
@@ -45,11 +45,20 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            @if (!String.IsNullOrEmpty(item.ImagePath))
+            {
+                <td>
+                    <img style="width: 75px" src="~/images/@item.ImagePath" alt="descriptive image" />
+                </td>
+            } else
+            {
+                <td>
+                    <img style="width: 75px" src="~/images/Bangazon-purple.png" alt="descriptive image" />
+                </td>
+
+            }
             <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
-            </td>
-            <td>
-                @Html.ActionLink(item.Title, "Details", "Products", new { id = item.ProductId }, new { area=""})
+                @Html.ActionLink(item.Title, "Details", "Products", new { id = item.ProductId }, new { area = "" })
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateCreated)
