@@ -1,11 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model Bangazon.Models.ProductViewModels.ProductDetailViewModel
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Details";
 }
 
-@if (Model.HasLikeButton == true && Model.HasDislikeButton == true)
+@* Render the Like Buttons if the logged in User does not have a preference listed in the table. OR, we can still render them if nobody is logged in, but they redirect to the login page on click.*@
+@if (Model.HasLikeButton == true && Model.HasDislikeButton == true || !SignInManager.IsSignedIn(User))
 {
     <div class="row float-right">
 
@@ -20,10 +22,14 @@
         </form>
 
     </div>
-} else if (Model.Preference.Like == true)
+} 
+
+@if (Model.HasLikeButton == false && Model.HasDislikeButton == true)
 {
     <div class="row float-right">✔ You liked this product!</div>
-} else if (Model.Preference.Like == false)
+} 
+
+@if (Model.HasLikeButton == true && Model.HasDislikeButton == false)
 {
     <div class="row float-right">❌ You disliked this product.</div>
 }

@@ -16,10 +16,12 @@ namespace Bangazon.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProductsController(ApplicationDbContext ctx, UserManager<ApplicationUser> userManager)
+        public ProductsController(ApplicationDbContext ctx, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
+            _signInManager = signInManager;
             _userManager = userManager;
             _context = ctx;
         }
@@ -46,46 +48,87 @@ namespace Bangazon.Controllers
         // GET: Products/Details/5
         public async Task<ActionResult> Details(int id)
         {
+            // Find the product matching the ID passed in
             var product = await _context.Product
                 .Include(p => p.ProductType)
                 .FirstOrDefaultAsync(p => p.ProductId == id);
 
-            var user = await GetCurrentUserAsync();
-
-            var userPreferences = await _context.Preference
-                .Where(p => p.ProductId == id)
-                .Where(p => p.UserId == user.Id)
-                .ToListAsync();
-
-            var userLikeOrDislike = await _context.Preference
-                .Where(p => p.ProductId == id)
-                .FirstOrDefaultAsync(p => p.UserId == user.Id);
+            // Check to see if a user is signed in so that controller will use this information. Otherwise details page will break if user is not logged in, because it is looking for user Preference info that doesn't exist.
+            if (_signInManager.IsSignedIn(User))
+            {
+                // Get logged in user
+                var user = await GetCurrentUserAsync();
                 
+                // Find the row in the Preference table that matches the product ID and logged in User and turn it into a List (this is crappy code since the List will always be a single item but idk how to refactor it yet)
+                var userPreferences = await _context.Preference
+                    .Where(p => p.ProductId == id)
+                    .Where(p => p.UserId == user.Id)
+                    .ToListAsync();
+                
+                // Find the same thing but this time just convert it into an object
+                var userLikeOrDislike = await _context.Preference
+                    .Where(p => p.ProductId == id)
+                    .FirstOrDefaultAsync(p => p.UserId == user.Id);
+                
+                // Make the view model
+                var viewModel = new ProductDetailViewModel()
+                {
+                    ProductId = product.ProductId,
+                    DateCreated = product.DateCreated,
+                    Title = product.Title,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Quantity = product.Quantity,
+                    ProductType = product.ProductType
+                };
 
-            var viewModel = new ProductDetailViewModel()
-            {
-                ProductId = product.ProductId,
-                DateCreated = product.DateCreated,
-                Title = product.Title,
-                Description = product.Description,
-                Price = product.Price,
-                Quantity = product.Quantity,
-                ProductType = product.ProductType,
-                Preference = userLikeOrDislike
-            };
-
-            if (userPreferences.Count == 0)
-            {
-                viewModel.HasLikeButton = true;
-                viewModel.HasDislikeButton = true;
-            } else
-            {
-                viewModel.HasLikeButton = false;
-                viewModel.HasDislikeButton = false;
+                // Write an if statement that will render the Like/Dislike buttons if the user does not have a preference (if the length of the List we made is 0 that means there is no preference stored for the user)
+                if (userPreferences.Count == 0)
+                {
+                    viewModel.HasLikeButton = true;
+                    viewModel.HasDislikeButton = true;
+                }
+                
+                // Now check that object we made that has the same info and drill down to see if the user has a preference. These will only trigger if that preference exists and they will render an option based on if the user Liked or Dislike before.
+                if (userLikeOrDislike.Like == true)
+                {
+                    viewModel.HasLikeButton = false;
+                    viewModel.HasDislikeButton = true;
+                } 
+                if (userLikeOrDislike.Like == false)
+                {
+                    viewModel.HasLikeButton = true;
+                    viewModel.HasDislikeButton = false;
+                }
+                
+                // Now render that View!
+                return View(viewModel);
             }
+            
+            // Remember when we said the product details view will break if there isn't a user logged in? This is what we do to prevent that. Instead of rendering a view that has a dependency on user Preference we take all of that info out and don't worry about the Like/Dislike buttons doing anything anymore. We can still render them on the details page if we so choose, but when the user clicks them it can just redirect them to the login page.
 
-            return View(viewModel);
+            if (!_signInManager.IsSignedIn(User))
+            {
+                var viewModel = new ProductDetailViewModel()
+                {
+                    ProductId = product.ProductId,
+                    DateCreated = product.DateCreated,
+                    Title = product.Title,
+                    Description = product.Description,
+                    Price = product.Price,
+                    Quantity = product.Quantity,
+                    ProductType = product.ProductType
+                };
+
+                return View(viewModel);
+            }
+            
+            // Had to put this here or else I would get an error saying 'Not all code paths return a value'. I don't get it either.
+            return View(product);
+
         }
+
+
 
         // GET: Products/Create
         public async Task<ActionResult> Create()
