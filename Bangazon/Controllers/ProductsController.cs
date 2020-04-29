@@ -57,6 +57,11 @@ namespace Bangazon.Controllers
                 .Where(p => p.UserId == user.Id)
                 .ToListAsync();
 
+            var userLikeOrDislike = await _context.Preference
+                .Where(p => p.ProductId == id)
+                .FirstOrDefaultAsync(p => p.UserId == user.Id);
+                
+
             var viewModel = new ProductDetailViewModel()
             {
                 ProductId = product.ProductId,
@@ -66,12 +71,17 @@ namespace Bangazon.Controllers
                 Price = product.Price,
                 Quantity = product.Quantity,
                 ProductType = product.ProductType,
+                Preference = userLikeOrDislike
             };
 
             if (userPreferences.Count == 0)
             {
                 viewModel.HasLikeButton = true;
                 viewModel.HasDislikeButton = true;
+            } else
+            {
+                viewModel.HasLikeButton = false;
+                viewModel.HasDislikeButton = false;
             }
 
             return View(viewModel);

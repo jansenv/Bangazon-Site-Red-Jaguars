@@ -5,9 +5,8 @@
     ViewData["Title"] = "Details";
 }
 
-
 @if (Model.HasLikeButton == true && Model.HasDislikeButton == true)
-    {
+{
     <div class="row float-right">
 
         <form asp-controller="Preferences" asp-action="Like">
@@ -21,8 +20,13 @@
         </form>
 
     </div>
-    }
-      
+} else if (Model.Preference.Like == true)
+{
+    <div class="row float-right">✔ You liked this product!</div>
+} else if (Model.Preference.Like == false)
+{
+    <div class="row float-right">❌ You disliked this product.</div>
+}
 
 <div>
     <h4>Product</h4>

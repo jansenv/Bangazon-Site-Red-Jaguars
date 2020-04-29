@@ -60,7 +60,7 @@ namespace Bangazon.Controllers
                 _context.Preference.Add(likeInstance);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", "Products");
+                return RedirectToAction("Details", "Products", new { id = likePreference.ProductId });
             }
             catch
             {
@@ -87,7 +87,7 @@ namespace Bangazon.Controllers
                 _context.Preference.Add(dislikeInstance);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", "Products");
+                return RedirectToAction("Details", "Products", new { id = dislikePreference.ProductId });
             }
             catch
             {
