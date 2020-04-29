@@ -59,6 +59,7 @@ namespace Bangazon.Controllers
 
             var viewModel = new ProductDetailViewModel()
             {
+                ProductId = product.ProductId,
                 DateCreated = product.DateCreated,
                 Title = product.Title,
                 Description = product.Description,
