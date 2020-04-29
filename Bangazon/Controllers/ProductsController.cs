@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Bangazon.Data;
@@ -94,6 +95,11 @@ namespace Bangazon.Controllers
                     ProductType = product.ProductType
                 };
 
+                if (!String.IsNullOrEmpty(product.ImagePath))
+                {
+                    viewModel.ImagePath = product.ImagePath;
+                }
+
                 // Write an if statement that will render the Like/Dislike buttons if the user does not have a preference (if the length of the List we made is 0 that means there is no preference stored for the user)
                 if (userPreferences.Count == 0)
                 {
@@ -177,10 +183,20 @@ namespace Bangazon.Controllers
                     Quantity = productDetailViewModel.Product.Quantity,
                     UserId = user.Id,
                     City = productDetailViewModel.Product.City,
-                    ImagePath = productDetailViewModel.Product.ImagePath,
                     Active = productDetailViewModel.Product.Active,
                     ProductTypeId = productDetailViewModel.Product.ProductTypeId
                 };
+
+                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images");
+                if (productDetailViewModel.ImageFile.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + productDetailViewModel.ImageFile.FileName;
+                    product.ImagePath = fileName;
+                    using (var fileStream = new FileStream(Path.Combine(uploadPath, fileName), FileMode.Create))
+                    {
+                        await productDetailViewModel.ImageFile.CopyToAsync(fileStream);
+                    }
+                }
 
                 _context.Product.Add(product);
                 await _context.SaveChangesAsync();
