@@ -35,22 +35,16 @@
 }
 
 <div>
-    <h4>Product</h4>
+    <h4>@Html.DisplayFor(model => model.Title)</h4>
     <hr />
     <div class="row">
         <div class="col-md-6">
             <dl class="row">
                 <dt class="col-sm-3">
-                    @Html.DisplayNameFor(model => model.DateCreated)
+                    Listed On
                 </dt>
                 <dd class="col-sm-7">
                     @Html.DisplayFor(model => model.DateCreated)
-                </dd>
-                <dt class="col-sm-3">
-                    @Html.DisplayNameFor(model => model.Title)
-                </dt>
-                <dd class="col-sm-7">
-                    @Html.DisplayFor(model => model.Title)
                 </dd>
                 <dt class="col-sm-3">
                     @Html.DisplayNameFor(model => model.Description)
@@ -62,7 +56,7 @@
                     @Html.DisplayNameFor(model => model.Price)
                 </dt>
                 <dd class="col-sm-7">
-                    @Html.DisplayFor(model => model.Price)
+                    $@Html.DisplayFor(model => model.Price)
                 </dd>
                 <dt class="col-sm-3">
                     @Html.DisplayNameFor(model => model.Quantity)
@@ -80,7 +74,7 @@
                     </dd>
                 }
                 <dt class="col-sm-3">
-                    Product Type
+                    Category
                 </dt>
                 <dd class="col-sm-7">
                     @Html.DisplayFor(model => model.ProductType.Label)
@@ -91,12 +85,9 @@
             @if (!String.IsNullOrEmpty(Model.ImagePath))
             {
                     <div class="col-md-10">
-                        <img style="max-width: 500px" src="~/images/@Model.ImagePath" alt="descriptive image" />
+                        <img style="max-height: 500px; max-width: 500px" src="~/images/@Model.ImagePath" alt="descriptive image" />
                     </div>
             }
         </div>
     </div>
-        <div>
-            @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-            <a asp-action="Index">Back to List</a>
-        </div>
+    </div>

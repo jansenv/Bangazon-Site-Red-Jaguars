@@ -150,6 +150,11 @@ namespace Bangazon.Controllers
                     ProductType = product.ProductType
                 };
 
+                if (!String.IsNullOrEmpty(product.ImagePath))
+                {
+                    viewModel.ImagePath = product.ImagePath;
+                }
+
                 return View(viewModel);
             }
             
